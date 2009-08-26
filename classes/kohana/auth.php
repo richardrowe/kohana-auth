@@ -49,9 +49,6 @@ abstract class Kohana_Auth {
 	 */
 	public function __construct($config = array())
 	{
-		// Append default auth configuration
-//		$config += Kohana::config('auth');
-
 		// Clean up the salt pattern and split it into an array
 		$config['salt_pattern'] = preg_split('/,\s*/', Kohana::config('auth')->get('salt_pattern'));
 
@@ -60,7 +57,7 @@ abstract class Kohana_Auth {
 
         $this->session = Session::instance();
 
-		//Kohana_Log::add('debug', 'Auth Library loaded');
+		Kohana_Log::instance()->add('debug', 'Auth Library loaded');
 	}
 
     abstract protected function _login($username, $password, $remember);

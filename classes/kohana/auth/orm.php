@@ -32,7 +32,6 @@ class Kohana_Auth_ORM extends Auth {
 
 			if ( ! empty($role))
 			{
-
 				// If role is an array
 				if (is_array($role))
 				{
@@ -44,7 +43,7 @@ class Kohana_Auth_ORM extends Auth {
 							$role_iteration = ORM::factory('role', array('name' => $role_iteration));
 						}
 						// If the user doesn't have the role
-						if( ! $user->has('role', $role))
+						if( ! $user->has('role', $role_iteration))
 						{
 							// Set the status false and get outta here
 							$status = FALSE;
@@ -54,7 +53,7 @@ class Kohana_Auth_ORM extends Auth {
 				}
 				else
 				{
-				// Else just check the one supplied roles
+					// Else just check the one supplied roles
 					if ( ! is_object($role))
 					{
 						// Load the role
@@ -146,7 +145,7 @@ class Kohana_Auth_ORM extends Auth {
 			// Load the token and user
 			$token = ORM::factory('user_token', $token);
 
-			if ($token->loaded AND $token->user->loaded)
+			if ($token->loaded() AND $token->user->loaded())
 			{
 				if ($token->user_agent === sha1(Kohana::$user_agent))
 				{
