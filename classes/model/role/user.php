@@ -1,3 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
-abstract class Auth extends Kohana_Auth {}
+class Model_Role_User extends Model_Auth_Role_user {
+
+}
