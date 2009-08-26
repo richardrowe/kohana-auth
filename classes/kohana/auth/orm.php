@@ -25,7 +25,7 @@ class Kohana_Auth_ORM extends Auth {
 		// Get the user from the session
 		$user = $this->session->get($this->config['session_key']);
 
-		if (is_object($user) AND $user instanceof Model_User AND $user->loaded)
+		if (is_object($user) AND $user instanceof Model_User AND $user->loaded())
 		{
 			// Everything is okay so far
 			$status = TRUE;
@@ -41,10 +41,10 @@ class Kohana_Auth_ORM extends Auth {
 					{
 						if ( ! is_object($role_iteration))
 						{
-							$role_iteration = ORM::factory('role', $role_iteration);
+							$role_iteration = ORM::factory('role', array('name' => $role_iteration));
 						}
 						// If the user doesn't have the role
-						if( ! $user->has($role_iteration))
+						if( ! $user->has('role', $role))
 						{
 							// Set the status false and get outta here
 							$status = FALSE;
@@ -58,11 +58,11 @@ class Kohana_Auth_ORM extends Auth {
 					if ( ! is_object($role))
 					{
 						// Load the role
-						$role = ORM::factory('role', $role);
+						$role = ORM::factory('role', array('name' => $role));
 					}
 
 					// Check that the user has the given role
-					$status = $user->has($role);
+					$status = $user->has('role', $role);
 				}
 			}
 		}
@@ -83,7 +83,7 @@ class Kohana_Auth_ORM extends Auth {
 		if ( ! is_object($user))
 		{
 			// Load the user
-			$user = ORM::factory('user', array('username' => $user));
+			$user = ORM::factory('user', array($this->config['login_key'] => $user));
 		}
 
 		// If the passwords match, perform a login
@@ -124,7 +124,7 @@ class Kohana_Auth_ORM extends Auth {
 		if ( ! is_object($user))
 		{
 			// Load the user
-			$user = ORM::factory('user', $user);
+			$user = ORM::factory('user', array($this->config['login_key'] => $user));
 		}
 
 		// Mark the session as forced, to prevent users from changing account information
@@ -212,7 +212,7 @@ class Kohana_Auth_ORM extends Auth {
 		if ( ! is_object($user))
 		{
 			// Load the user
-			$user = ORM::factory('user', array('username' => $user));
+			$user = ORM::factory('user', array($this->config['login_key'] => $user));
 		}
 
 		return $user->password;

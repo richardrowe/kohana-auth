@@ -11,11 +11,18 @@ $config['driver'] = 'ORM';
 /**
  * Type of hash to use for passwords. Any algorithm supported by the hash function
  * can be used here. Note that the length of your password is determined by the
- * hash type + the number of salt characters.
+ * hash type + the number of salt characters. You can also set this to 'none' if
+ * you don't want the password to be hashed.
  * @see http://php.net/hash
  * @see http://php.net/hash_algos
  */
 $config['hash_method'] = 'sha1';
+
+/**
+ * What field you want to use for the 'login name', you can use either 'email' or 'username'
+ * with the default ORM driver.
+ */
+$config['login_key'] = 'username';
 
 /**
  * Defines the hash offsets to insert the salt at. The password hash length
