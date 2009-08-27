@@ -143,11 +143,11 @@ class Kohana_Auth_ORM extends Auth {
 		if ($token = cookie::get('authautologin'))
 		{
 			// Load the token and user
-			$token = ORM::factory('user_token', $token);
+			$token = ORM::factory('user_token', array('token' => $token));
 
 			if ($token->loaded() AND $token->user->loaded())
 			{
-				if ($token->user_agent === sha1(Kohana::$user_agent))
+				if ($token->user_agent === sha1(Request::$user_agent))
 				{
 					// Save the token to create a new unique token
 					$token->save();
@@ -187,11 +187,11 @@ class Kohana_Auth_ORM extends Auth {
 			// Clear the autologin token from the database
 			$token = ORM::factory('user_token', $token);
 
-			if ($token->loaded AND $logout_all)
+			if ($token->loaded() AND $logout_all)
 			{
 				ORM::factory('user_token')->where('user_id', $token->user_id)->delete_all();
 			}
-			elseif ($token->loaded)
+			elseif ($token->loaded())
 			{
 				$token->delete();
 			}
