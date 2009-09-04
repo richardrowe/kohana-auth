@@ -2,19 +2,19 @@
 
 class Model_Auth_Role extends ORM {
 
-	protected $_has_many = array('users' => array('through' => 'roles_users'));
+	protected $_has_many = array('users' => array('model' => 'user', 'through' => 'user_role'));
 
 	protected $_rules = array
 	(
 		'name'		=> array
 		(
 			'not_empty'	=> NULL,
-			'min_length'	=> 4,
-			'max_length'	=> 32,
+			'min_length'	=> array(4),
+			'max_length'	=> array(32),
 		),
 		'description'	=> array
 		(
-			'max_length'	=> 255,
+			'max_length'	=> array(255),
 		),
 	);
 

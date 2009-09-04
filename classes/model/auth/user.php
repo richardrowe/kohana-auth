@@ -9,7 +9,7 @@ class Model_Auth_User extends ORM {
 		'roles'			=> array('model' => 'role', 'through' => 'roles_users'),
 	);
 
-	protected $_rules = array
+	protected $rules = array
 	(
 		'username'			=> array
 		(
