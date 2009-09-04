@@ -5,7 +5,7 @@
  *
  * @package    Auth
  * @author     Kohana Team
- * @copyright  (c) 2007 Kohana Team
+ * @copyright  (c) 2007-2009 Kohana Team
  * @license    http://kohanaphp.com/license.html
  */
 abstract class Kohana_Auth {
@@ -30,7 +30,7 @@ abstract class Kohana_Auth {
 
 			if ( ! Kohana::auto_load($class))
 				throw new Kohana_Exception('core.driver_not_found', $config['driver'], get_class($this));
-
+			
 			// Create a new session instance
 			Auth::$instance = new $class($config);
 		}
@@ -38,9 +38,19 @@ abstract class Kohana_Auth {
 		return Auth::$instance;
 	}
 
-    protected $session;
+	/**
+	 * Create an instance of Auth.
+	 *
+	 * @return  object
+	 */
+	public static function factory($config = array())
+	{
+		return new Auth($config);
+	}
 
-    protected $config;
+	protected $session;
+
+	protected $config;
 
 	/**
 	 * Loads Session and configuration options.
@@ -56,14 +66,13 @@ abstract class Kohana_Auth {
 		$this->config = $config;
 
         $this->session = Session::instance();
-
-		Kohana_Log::instance()->add('debug', 'Auth Library loaded');
+        
+        Kohana_Log::instance()->add('debug', 'Auth Library loaded');
 	}
 
-    abstract protected function _login($username, $password, $remember);
+	abstract protected function _login($username, $password, $remember);
 
 	abstract public function password($username);
-
 
 	/**
 	 * Gets the currently logged in user from the session.
@@ -130,7 +139,7 @@ abstract class Kohana_Auth {
 		}
 
 		// Double check
-		return ! $this->logged_in(NULL);
+		return ! $this->logged_in();
 	}
 
 	/**

@@ -5,11 +5,11 @@ class Model_Auth_User extends ORM {
 	// Relationships
 	protected $_has_many = array
 	(
-		'user_tokens' => array(),
-		'roles' => array('model' => 'role', 'through' => 'role_user')
+		'user_tokens'	=> array('model' => 'user_token'),
+		'roles'			=> array('model' => 'role', 'through' => 'roles_users'),
 	);
 
-	protected $rules = array
+	protected $_rules = array
 	(
 		'username'			=> array
 		(

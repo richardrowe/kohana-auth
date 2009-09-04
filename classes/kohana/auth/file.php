@@ -34,7 +34,7 @@ class Kohana_Auth_File_Driver extends Auth {
 	 * @param   boolean  enable auto-login (not supported)
 	 * @return  boolean
 	 */
-	public function login($username, $password, $remember)
+	public function _login($username, $password, $remember)
 	{
 		if (isset($this->users[$username]) AND $this->users[$username] === $password)
 		{

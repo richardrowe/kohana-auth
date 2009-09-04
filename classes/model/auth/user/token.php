@@ -81,10 +81,11 @@ class Model_Auth_User_Token extends ORM {
 
 			// Make sure the token does not already exist
 			$count = DB::select('id')
-						->where('token','=', $token)
-						->from($this->_table_name)
-						->execute($this->_db)
-						->count();
+				->where('token', '=', $token)
+				->from($this->_table_name)
+				->execute($this->_db)
+				->count();
+
 			if ($count === 0)
 			{
 				// A unique token has been found
@@ -93,4 +94,4 @@ class Model_Auth_User_Token extends ORM {
 		}
 	}
 
-} // End Auth User Token Model
+} // End Auth_User_Token Model
