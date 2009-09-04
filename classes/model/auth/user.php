@@ -3,8 +3,11 @@
 class Model_Auth_User extends ORM {
 
 	// Relationships
-	protected $has_many = array('user_tokens');
-	protected $has_and_belongs_to_many = array('roles');
+	protected $_has_many = array
+	(
+		'user_tokens' => array(),
+		'roles' => array('model' => 'role', 'through' => 'role_user')
+	);
 
 	protected $rules = array
 	(
@@ -33,9 +36,6 @@ class Model_Auth_User extends ORM {
 			'validate::email'	=> NULL,
 		),
 	);
-
-	// Columns to ignore
-	protected $ignored_columns = array('password_confirm');
 
 	public function __set($key, $value)
 	{

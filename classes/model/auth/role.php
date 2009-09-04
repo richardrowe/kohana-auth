@@ -2,7 +2,10 @@
 
 class Model_Auth_Role extends ORM {
 
-	protected $has_and_belongs_to_many = array('users');
+	protected $_has_many = array
+	(
+		'users' => array('model' => 'user', 'through' => 'user_role')
+	);
 
 	/**
 	 * Validates and optionally saves a role record from an array.
