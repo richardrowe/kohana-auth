@@ -33,7 +33,7 @@ class Model_Auth_User extends ORM {
 			'not_empty'		=> NULL,
 			'min_length'		=> array(4),
 			'max_length'		=> array(127),
-			'validate::email'	=> NULL,
+			'email'	=> NULL,
 		),
 	);
 
@@ -61,14 +61,17 @@ class Model_Auth_User extends ORM {
 		$array = Validate::factory($array)
 			->filter(TRUE, 'trim')
 			->rules('email', $this->rules['email'])
-			//->callback('email', array($this, 'email_available'))
+			->callback('email', array($this, 'email_available'))
 			->rules('username', $this->rules['username'])
-			//->callback('username', array($this, 'username_available'))
+			->callback('username', array($this, 'username_available'))
 			->rules('password', $this->rules['password'])
 			->rules('password_confirm', $this->rules['password_confirm']);
 
 		if ($status = $array->check())
 		{
+			// Set values
+			$this->values($array);
+			
 			if ($save !== FALSE AND $status = $this->save())
 			{
 				if (is_string($save))
@@ -197,11 +200,13 @@ class Model_Auth_User extends ORM {
 	 */
 	public function unique_key_exists($value)
 	{
-		return (bool) DB::select(array('COUNT("*")', 'total_count '))
-						->from($this->db->table_prefix().$this->table_name)
-						->where($this->unique_key($value), '=', $value)
-						->execute($this->db)
-						->get('total_count');
+		$results = DB::select()
+			->as_object()
+			->from($this->_table_name)
+			->where($this->unique_key($value), '=', $value)
+			->execute();
+			
+		return (bool) count($results);
 	}
 
 	/**
@@ -210,11 +215,11 @@ class Model_Auth_User extends ORM {
 	public function unique_key($id)
 	{
 		if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
-		{
+		{	
 			return validate::email($id) ? 'email' : 'username';
 		}
-
-		return parent::unique_key($id);
+		
+		return $this->_primary_key;
 	}
 
 } // End Auth_User
