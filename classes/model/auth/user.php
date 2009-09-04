@@ -200,13 +200,13 @@ class Model_Auth_User extends ORM {
 	 */
 	public function unique_key_exists($value)
 	{
-		$results = DB::select()
-			->as_object()
+		$count = DB::select('id')
 			->from($this->_table_name)
 			->where($this->unique_key($value), '=', $value)
-			->execute();
+			->execute($this->_db)
+			->count();
 			
-		return (bool) count($results);
+		return (bool) $count;
 	}
 
 	/**
