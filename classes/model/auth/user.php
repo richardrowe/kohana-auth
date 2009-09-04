@@ -61,13 +61,25 @@ class Model_Auth_User extends ORM {
 		$array = Validate::factory($array)
 			->filter(TRUE, 'trim')
 			->rules('email', $this->rules['email'])
-			->callback('email', array($this, 'email_available'))
+			//->callback('email', array($this, 'email_available'))
 			->rules('username', $this->rules['username'])
-			->callback('username', array($this, 'username_available'))
+			//->callback('username', array($this, 'username_available'))
 			->rules('password', $this->rules['password'])
 			->rules('password_confirm', $this->rules['password_confirm']);
 
-		return parent::validate($array, $save);
+		if ($status = $array->check())
+		{
+			if ($save !== FALSE AND $status = $this->save())
+			{
+				if (is_string($save))
+				{
+					// Redirect to the saved page
+					Request::instance()->redirect($save);
+				}
+			}
+		}
+		
+		return $status;
 	}
 
 	/**
@@ -98,7 +110,7 @@ class Model_Auth_User extends ORM {
 				if (is_string($redirect))
 				{
 					// Redirect after a successful login
-					url::redirect($redirect);
+					Request::instance()->redirect($redirect);
 				}
 
 				// Login is successful
@@ -137,7 +149,7 @@ class Model_Auth_User extends ORM {
 				if (is_string($save))
 				{
 					// Redirect to the success page
-					url::redirect($save);
+					Request::instance()->redirect($save);
 				}
 			}
 		}
@@ -205,4 +217,4 @@ class Model_Auth_User extends ORM {
 		return parent::unique_key($id);
 	}
 
-} // End Auth User Model
+} // End Auth_User
