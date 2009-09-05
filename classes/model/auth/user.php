@@ -14,15 +14,10 @@ class Model_Auth_User extends ORM {
 		'username'			=> array
 		(
 			'not_empty'		=> NULL,
-			'min_length'		=> array(4),
-			'max_length'		=> array(32),
-			'regex'			=> array('![a-zA-Z0-9_.]!u'),
 		),
 		'password'			=> array
 		(
 			'not_empty'		=> NULL,
-			'min_length'		=> array(5),
-			'max_length'		=> array(42),
 		),
 		'password_confirm'	=> array
 		(
@@ -71,7 +66,7 @@ class Model_Auth_User extends ORM {
 		{
 			// Set values
 			$this->values($array);
-			
+
 			if ($save !== FALSE AND $status = $this->save())
 			{
 				if (is_string($save))
@@ -81,7 +76,7 @@ class Model_Auth_User extends ORM {
 				}
 			}
 		}
-		
+
 		return $status;
 	}
 
@@ -205,7 +200,7 @@ class Model_Auth_User extends ORM {
 			->where($this->unique_key($value), '=', $value)
 			->execute($this->_db)
 			->count();
-			
+
 		return (bool) $count;
 	}
 
@@ -215,10 +210,10 @@ class Model_Auth_User extends ORM {
 	public function unique_key($id)
 	{
 		if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
-		{	
+		{
 			return validate::email($id) ? 'email' : 'username';
 		}
-		
+
 		return $this->_primary_key;
 	}
 
