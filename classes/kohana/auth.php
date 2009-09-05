@@ -66,7 +66,7 @@ abstract class Kohana_Auth {
 		$this->config = $config;
 
         $this->session = Session::instance();
-        
+
         Kohana_Log::instance()->add('debug', 'Auth Library loaded');
 	}
 

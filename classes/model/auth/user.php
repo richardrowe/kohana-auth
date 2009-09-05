@@ -106,9 +106,9 @@ class Model_Auth_User extends ORM {
 		if ($array->check())
 		{
 			// Attempt to load the user
-			$this->find($array['username']);
-
-			if ($this->loaded AND Auth::instance()->login($this, $array['password']))
+			//$this->find($array['username']);
+			
+			if (Auth::instance()->login($array['username'], $array['password']))
 			{
 				if (is_string($redirect))
 				{
